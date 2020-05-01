@@ -152,9 +152,9 @@ after_initialize do
 				  format.json { render_serialized(@category_list, CategoryListSerializer) }
 				end
 			  end
-			  prepend TopicFilter5
 			end  
-  
+  			prepend TopicFilter5
+
 		end
 		
  		class ::TopicQuery
