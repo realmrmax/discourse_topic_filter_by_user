@@ -13,7 +13,7 @@ after_initialize do
     remove_muted_tags = Proc.new do |list_type, result, user, options|
 
         muted_tags = DiscourseTagging.muted_tags(user)
-		if controller_path == "categories"
+		if  request.referer ~ /\// && request.referer ~ /\/categories\//
             result.where("topics.user_id NOT IN (1,-1)")
 		end
     end
