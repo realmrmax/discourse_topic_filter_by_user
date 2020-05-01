@@ -92,6 +92,7 @@ after_initialize do
 			  end			
 			prepend TopicFilter2  
 		end
+		
  		class ::TopicQuery
 			module TopicFilter3
 			  def list_kb
