@@ -4,8 +4,8 @@
 # authors: Maxym Khaykin
 # url: https://github.com/realmrmax/discourse_topic_filter_by_user
 
-after_initialize do
-  require_dependency 'topic_query'
+#after_initialize do
+  # require_dependency 'topic_query'
   # require_dependency 'application_controller'
 
   # if TopicQuery.respond_to?(:results_filter_callbacks)
