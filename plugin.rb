@@ -26,11 +26,21 @@
 
 after_initialize do
   require_dependency 'topic_query'
-
+  require_dependency 'categories_controller'
+  
 		TopicQuery.add_custom_filter(:kb) do |results, latest|
 
 			results = results.where("topics.user_id NOT IN (1,-1)")
 		
+		end
+		
+		class ::Categories_controller
+			module TopicFilter
+				def categories_and_latest
+					categories_and_topics(:kb)
+				end
+			end
+			prepend TopicFilter
 		end
  
 end
