@@ -9,8 +9,8 @@ after_initialize do
 
 		TopicQuery.add_custom_filter(:kb) do |results, topic_query|
 
-		 results = results.where("topics.used_id <> 1")
-		 results
+			results = results.where("topics.user_id <> 1")
+		
 		end
  
 end
