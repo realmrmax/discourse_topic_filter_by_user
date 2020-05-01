@@ -90,6 +90,7 @@ after_initialize do
 
 				render_serialized(result, CategoryAndTopicListsSerializer, root: false)
 			  end			
+			end
 			prepend TopicFilter2  
 		end
 		
