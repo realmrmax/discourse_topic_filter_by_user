@@ -6,7 +6,7 @@
 
 after_initialize do
   require_dependency 'topic_query'
-  require_dependency 'application_conroller'
+  require_dependency 'application_controller'
 
   if TopicQuery.respond_to?(:results_filter_callbacks)
     remove_muted_for_lists = [:latest, :new]
