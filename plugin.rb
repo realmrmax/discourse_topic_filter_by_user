@@ -72,7 +72,7 @@ after_initialize do
 
 				if topics_filter == :latest
 				  result.topic_list = TopicQuery.new(current_user, topic_options).list_latest
-				elsif topics_filter == :tkb
+				elsif topics_filter == :kb
 				  result.topic_list = TopicQuery.new(current_user, topic_options).list_kb
 				elsif topics_filter == :top
 				  result.topic_list = TopicQuery.new(nil, topic_options).list_top_for(SiteSetting.top_page_default_timeframe.to_sym)
@@ -92,29 +92,87 @@ after_initialize do
 			  end			
 			end
 			prepend TopicFilter2  
+
+			module TopicFilter5
+			  def index
+				discourse_expires_in 1.minute
+
+				@description = SiteSetting.site_description
+
+				parent_category = Category.find_by_slug(params[:parent_category_id]) || Category.find_by(id: params[:parent_category_id].to_i)
+
+				category_options = {
+				  is_homepage: current_homepage == "categories",
+				  parent_category_id: params[:parent_category_id],
+				  include_topics: include_topics(parent_category)
+				}
+
+				@category_list = CategoryList.new(guardian, category_options)
+				@category_list.draft_key = Draft::NEW_TOPIC
+				@category_list.draft_sequence = DraftSequence.current(
+				  current_user,
+				  Draft::NEW_TOPIC
+				)
+				@category_list.draft = Draft.get(current_user, Draft::NEW_TOPIC, @category_list.draft_sequence) if current_user
+
+				if category_options[:is_homepage] && SiteSetting.short_site_description.present?
+				  @title = "#{SiteSetting.title} - #{SiteSetting.short_site_description}"
+				elsif !category_options[:is_homepage]
+				  @title = "#{I18n.t('js.filters.categories.title')} - #{SiteSetting.title}"
+				end
+
+				respond_to do |format|
+				  format.html do
+					store_preloaded(@category_list.preload_key, MultiJson.dump(CategoryListSerializer.new(@category_list, scope: guardian)))
+
+					style = SiteSetting.desktop_category_page_style
+					topic_options = {
+					  per_page: CategoriesController.topics_per_page,
+					  no_definitions: true
+					}
+
+					if style == "categories_and_latest_topics"
+					  @topic_list = TopicQuery.new(current_user, topic_options).list_kb
+					  @topic_list.more_topics_url = url_for(public_send("latest_path"))
+					elsif style == "categories_and_top_topics"
+					  @topic_list = TopicQuery.new(nil, topic_options).list_top_for(SiteSetting.top_page_default_timeframe.to_sym)
+					  @topic_list.more_topics_url = url_for(public_send("top_path"))
+					end
+
+					if @topic_list.present? && @topic_list.topics.present?
+					  store_preloaded(
+						@topic_list.preload_key,
+						MultiJson.dump(TopicListSerializer.new(@topic_list, scope: guardian))
+					  )
+					end
+
+					render
+				  end
+
+				  format.json { render_serialized(@category_list, CategoryListSerializer) }
+				end
+			  end
+			  prepend TopicFilter5
+			end  
+  
 		end
 		
  		class ::TopicQuery
 			module TopicFilter3
 			  def list_kb
-				create_list(:kb, {}, latest_results)
+				create_list(:kb, {}, latest_kb_results)
 			  end			
 			end
 			prepend TopicFilter3
 			
 			module TopicFilter4
-			  def latest_results(options = {})
+			  def latest_kb_results(options = {})
 				result = default_results(options)
 				result = remove_muted_topics(result, @user) unless options && options[:state] == "muted"
 				result = remove_muted_categories(result, @user, exclude: options[:category])
 				result = remove_muted_tags(result, @user, options)
 				result = apply_shared_drafts(result, get_category_id(options[:category]), options)
 				result.where("topics.user_id NOT IN (1,-1)") 
-
-				# plugins can remove topics here:
-				self.class.results_filter_callbacks.each do |filter_callback|
-				  result = filter_callback.call(:kb, result, @user, options)
-				end
 
 				result
 			  end			
