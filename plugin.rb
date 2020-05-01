@@ -13,7 +13,7 @@ after_initialize do
 
         muted_tags = DiscourseTagging.muted_tags(user)
 
-            result.where("topics.user_id <> 1")
+            result.where("topics.user_id NOT IN (1,-1)")
 
     end
 
