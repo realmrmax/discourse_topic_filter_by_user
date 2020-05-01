@@ -15,7 +15,7 @@ after_initialize do
 		#if  request.referer =~ /\// || request.referer =~ /\/categories\//
             result.where("topics.user_id NOT IN (1,-1)")
 		#end
-		Rails.logger.error "#{current_page}"
+		Rails.logger.warn("#{Discourse.base_uri}")
     end
 
     TopicQuery.results_filter_callbacks << remove_muted_tags
