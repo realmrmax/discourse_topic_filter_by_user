@@ -6,14 +6,13 @@
 
 after_initialize do
   require_dependency 'topic_query'
-  require_dependency 'application_controller'
 
   if TopicQuery.respond_to?(:results_filter_callbacks)
     remove_muted_for_lists = [:latest, :new]
     remove_muted_tags = Proc.new do |list_type, result, user, options|
 
         muted_tags = DiscourseTagging.muted_tags(user)
-		if  request.referer =~ /\// && request.referer =~ /\/categories\//
+		if  request.referer =~ /\// || request.referer =~ /\/categories\//
             result.where("topics.user_id NOT IN (1,-1)")
 		end
     end
