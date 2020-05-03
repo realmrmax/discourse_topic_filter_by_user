@@ -28,10 +28,10 @@
 after_initialize do
   require_dependency 'topic_query'
 	
-	request_new = ::ActionDispatch::Request.new(env)
+	request_new = ActionDispatch::Request.new(env)
 		Rails.logger.warn("#{::ActionDispatch::Request.fullpath}")
 		Rails.logger.warn("#{request_new.fullpath}")
-	end
+	
 		TopicQuery.add_custom_filter(:kb) do |results, latest|
 
 			results = results.where("topics.user_id NOT IN (1,-1)")
