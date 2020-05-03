@@ -27,15 +27,18 @@
 
 after_initialize do
   require_dependency 'topic_query'
-  require_dependency 'application_controller'
 	
-	#class ApplicationController < ActionController::Base
-	  # include CurrentUser
-	  # include CanonicalURL::ControllerExtensions
-	  # include JsonError
-	  # include GlobalPath
-	  # include Hijack
-	  # include ReadOnlyHeader
+	class ApplicationController < ActionController::Base
+		before_filter :determine_website
+
+		private
+		def determine_website
+			sitename = request.fullpath
+			Rails.logger.warn("#{sitename}")
+
+		end
+
+	end
 	  
 	  Rails.logger.warn("#{ApplicationController.request.fullpath}")
 		#Rails.logger.warn("#{request_new.fullpath}")
