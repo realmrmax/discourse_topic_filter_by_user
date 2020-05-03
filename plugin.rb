@@ -44,15 +44,12 @@ after_initialize do
 		# TopicQuery.results_filter_callbacks << remove_muted_tags
 	  # end		
 
-		class ::Categories_controller
-			module TopicFilter1
+		class CategoriesController
+		
 				def categories_and_latest
 					categories_and_topics(:kb)
 				end
-			end
-			prepend TopicFilter1
 			
-			module TopicFilter2
 			  def categories_and_topics(topics_filter)
 				discourse_expires_in 1.minute
 
@@ -90,10 +87,8 @@ after_initialize do
 
 				render_serialized(result, CategoryAndTopicListsSerializer, root: false)
 			  end			
-			end
-			prepend TopicFilter2  
 
-			module TopicFilter5
+
 			  def index
 				discourse_expires_in 1.minute
 
@@ -152,20 +147,16 @@ after_initialize do
 				  format.json { render_serialized(@category_list, CategoryListSerializer) }
 				end
 			  end
-			end  
-  			prepend TopicFilter5
+
 
 		end
 		
- 		class ::TopicQuery
-			module TopicFilter3
+ 		class TopicQuery
+
 			  def list_kb
 				create_list(:kb, {}, latest_kb_results)
 			  end			
-			end
-			prepend TopicFilter3
 			
-			module TopicFilter4
 			  def latest_kb_results(options = {})
 				result = default_results(options)
 				result = remove_muted_topics(result, @user) unless options && options[:state] == "muted"
@@ -176,7 +167,6 @@ after_initialize do
 
 				result
 			  end			
-			end
-			prepend TopicFilter4
+
 		end
 end
