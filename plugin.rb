@@ -28,8 +28,15 @@
 after_initialize do
   require_dependency 'topic_query'
 	
-		#request_new = ActionDispatch::Request.new(env)
-		Rails.logger.warn("#{ActionDispatch::Request.fullpath}")
+	class ApplicationController < ActionController::Base
+	  include CurrentUser
+	  include CanonicalURL::ControllerExtensions
+	  include JsonError
+	  include GlobalPath
+	  include Hijack
+	  include ReadOnlyHeader
+	  
+	  Rails.logger.warn("#{request.fullpath}")
 		#Rails.logger.warn("#{request_new.fullpath}")
 	
 		TopicQuery.add_custom_filter(:kb) do |results, latest|
