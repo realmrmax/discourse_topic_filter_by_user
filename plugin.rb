@@ -29,7 +29,7 @@ after_initialize do
   require_dependency 'topic_query'
 	
 		#request_new = ActionDispatch::Request.new(env)
-		Rails.logger.warn("#{::ActionDispatch::Request.fullpath}")
+		Rails.logger.warn("#{::ActionDispatch::Request.url}")
 		#Rails.logger.warn("#{request_new.fullpath}")
 	
 		TopicQuery.add_custom_filter(:kb) do |results, latest|
