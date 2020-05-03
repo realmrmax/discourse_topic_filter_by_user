@@ -27,18 +27,19 @@
 
 after_initialize do
   require_dependency 'topic_query'
+  require_dependency 'application_controller'
 	
-	class ApplicationController < ActionController::Base
-	  include CurrentUser
-	  include CanonicalURL::ControllerExtensions
-	  include JsonError
-	  include GlobalPath
-	  include Hijack
-	  include ReadOnlyHeader
+	#class ApplicationController < ActionController::Base
+	  # include CurrentUser
+	  # include CanonicalURL::ControllerExtensions
+	  # include JsonError
+	  # include GlobalPath
+	  # include Hijack
+	  # include ReadOnlyHeader
 	  
-	  Rails.logger.warn("#{ActionController::Base.request.fullpath}")
+	  Rails.logger.warn("#{ApplicationController.request.fullpath}")
 		#Rails.logger.warn("#{request_new.fullpath}")
-	end
+	#end
 		TopicQuery.add_custom_filter(:kb) do |results, latest|
 
 			results = results.where("topics.user_id NOT IN (1,-1)")
