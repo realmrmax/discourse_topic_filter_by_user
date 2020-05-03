@@ -36,7 +36,7 @@ after_initialize do
 	  include Hijack
 	  include ReadOnlyHeader
 	  
-	  Rails.logger.warn("#{request.fullpath}")
+	  Rails.logger.warn("#{ActionController::Base.request.fullpath}")
 		#Rails.logger.warn("#{request_new.fullpath}")
 	end
 		TopicQuery.add_custom_filter(:kb) do |results, latest|
