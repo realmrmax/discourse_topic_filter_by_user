@@ -27,15 +27,16 @@
 
 after_initialize do
   require_dependency 'topic_query'
-  require_dependency 'application_controller'
-  
+	
+	class ApplicationController < ActionController::Base
+		Rails.logger.warn("#{ApplicationController.request.fullpath}")
+	end
 		TopicQuery.add_custom_filter(:kb) do |results, latest|
 
 			results = results.where("topics.user_id NOT IN (1,-1)")
 		
 		end  
 	
-	Rails.logger.warn("#{ApplicationController.request.fullpath}")
   
 end
 
