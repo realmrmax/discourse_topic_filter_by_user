@@ -29,17 +29,17 @@ after_initialize do
   require_dependency 'topic_query'
   require_dependency 'application_controller'
 
-	class ApplicationController < ActionController::Base
-		before_filter :determine_website
+	# class ApplicationController < ActionController::Base
+		# before_filter :determine_website
 
-		private
-		def determine_website
-			sitename = request.fullpath
-			Rails.logger.warn("#{sitename}")
+		# private
+		# def determine_website
+			# sitename = request.fullpath
+			Rails.logger.warn("#{:controller}")
 
-		end
+		# end
 
-	end
+	# end
 	  
 	  Rails.logger.warn("#{ApplicationController.request.fullpath}")
 		#Rails.logger.warn("#{request_new.fullpath}")
