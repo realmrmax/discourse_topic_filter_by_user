@@ -35,7 +35,7 @@ after_initialize do
 		
 		end  
 	
-	Rails.logger.warn("#{request.fullpath}")
+	Rails.logger.warn("#{ApplicationController.request.fullpath}")
   
 end
 
