@@ -27,7 +27,8 @@
 
 after_initialize do
   require_dependency 'topic_query'
-	
+  require_dependency 'application_controller'
+
 	class ApplicationController < ActionController::Base
 		before_filter :determine_website
 
