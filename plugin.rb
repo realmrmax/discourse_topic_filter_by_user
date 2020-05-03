@@ -41,7 +41,7 @@ after_initialize do
 
 	# end
 	  
-	  Rails.logger.warn("#{ApplicationController.request.fullpath}")
+	  #Rails.logger.warn("#{ApplicationController.request.fullpath}")
 		#Rails.logger.warn("#{request_new.fullpath}")
 	#end
 		TopicQuery.add_custom_filter(:kb) do |results, latest|
