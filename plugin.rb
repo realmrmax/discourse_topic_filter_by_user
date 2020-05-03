@@ -28,7 +28,7 @@
 after_initialize do
   require_dependency 'topic_query'
 	
-	class ApplicationController < ActionController::Base
+	class ActionController::Base
 		Rails.logger.warn("#{request.fullpath}")
 	end
 		TopicQuery.add_custom_filter(:kb) do |results, latest|
