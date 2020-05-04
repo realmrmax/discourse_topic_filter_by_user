@@ -35,7 +35,7 @@ after_initialize do
 		# private
 		# def determine_website
 			# sitename = request.fullpath
-			Rails.logger.warn("#{controller_name}")
+			Rails.logger.warn("#{controller.controller_name}")
 
 		# end
 
